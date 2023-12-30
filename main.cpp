@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib> // for realpath
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -22,22 +23,42 @@ int createLink(const char* source, const char* dest, bool isSymbolic) {
         return 1;
     }
 
+    char* absoluteSource = realpath(source, nullptr);
+
+    if (!absoluteSource) {
+        std::perror("Error getting absolute path");
+        free(absoluteSource);
+        return 4;
+    }
+
+    if (!fileExists(absoluteSource)) {
+        std::cout << "Error: Source file does not exist." << std::endl;
+    }
+
     if (isSymbolic) {
-        if (symlink(source, dest) != 0) {
+        if (symlink(absoluteSource, dest) != 0) {
             std::perror("Error creating symbolic link");
+            free(absoluteSource);
             return 2;
         }
     } else {
-        if (link(source, dest) != 0) {
+        if (link(absoluteSource, dest) != 0) {
             std::perror("Error creating hard link");
+            free(absoluteSource);
             return 3;
         }
     }
+
+    free(absoluteSource);
 
     return 0;
 }
 
 int main(int argc, char* argv[]) {
+    if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+        printHelp();
+        return 0;
+    }
     if (argc != 4) {
         std::cerr << "Error: Invalid number of arguments.\n";
         printHelp();
@@ -46,6 +67,9 @@ int main(int argc, char* argv[]) {
 
     const char* source = argv[2];
     const char* dest = argv[3];
+
+    std::cout << "Source: " << source << std::endl;
+    std::cout << "Destination: " << dest << std::endl;
 
     if (strcmp(argv[1], "--soft") == 0) {
         return createLink(source, dest, true);
