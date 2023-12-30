@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/anna/code/additional_links/build",
+  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/my_ln.dir/main.cpp.o -c /home/anna/code/additional_links/main.cpp",
+  "file": "/home/anna/code/additional_links/main.cpp"
+}
+]

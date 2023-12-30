@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/my_ln.dir/main.cpp.o -o my_ln 

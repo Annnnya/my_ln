@@ -1,0 +1,3 @@
+/home/anna/code/additional_links/build/CMakeFiles/my_ln.dir
+/home/anna/code/additional_links/build/CMakeFiles/edit_cache.dir
+/home/anna/code/additional_links/build/CMakeFiles/rebuild_cache.dir
